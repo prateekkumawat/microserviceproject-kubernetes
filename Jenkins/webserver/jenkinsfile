@@ -1,0 +1,86 @@
+pipeline {
+    agent {
+        label "devops"
+    }
+    environment {
+        SCANNER_HOME=tool 'sonar-scanner'
+        AWS_REGION = 'ap-south-2'
+        ECR_REPO = 'microservice'
+        AWS_ACCOUNT_ID = '605134434853'
+        URL_REGISTRY = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+    }
+
+    stages{
+        stage("Clean Workspace") { 
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage("Code Checkout"){
+          steps{ 
+            git url:"https://github.com/prateekkumawat/microserviceproject-kubernetes.git", branch: "main"
+          }
+        }
+
+        stage('Sonarqube Analysis') {
+            steps {
+                dir('web_server/') {
+                    withSonarQubeEnv('sonar-server') {
+                        sh ''' $SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectName=microserviceproject-kubernetes-webserver \
+                        -Dsonar.projectKey=microserviceproject-kubernetes-webserver '''
+                    }
+                }
+            }
+        }
+        stage('QualityGate') {
+            steps {
+                script {
+                    dir('web_server/') {
+                        waitForQualityGate abortPipeline: false, credentialsId: 'microserviceproject-kubernetes-webserver' 
+                    }
+                }
+            }
+        }
+
+        stage('Trivy FScan') {
+            steps {
+                dir('web_server/') {
+                    sh 'trivy fs . > /home/ubuntu/trivyfs.txt'
+                }
+            }
+        }
+
+        stage("Build Image") { 
+            steps {
+                dir('web_server/') {  
+                   sh "docker build --no-cache -t web_server:${BUILD_NUMBER} ."
+                }
+            }
+        }        
+
+        stage("Trivy ImageScan") {
+            steps {
+                sh 'trivy image web_server:${BUILD_NUMBER} > /home/ubuntu/trivyimageweb_report.txt' 
+            }
+        }
+        
+        stage('ECRImage Push') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'ecr-login-credes', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        // Login to ECR
+                        sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${URL_REGISTRY}"
+
+                        // Tag Docker image
+                        sh "docker tag web_server:${BUILD_NUMBER} ${URL_REGISTRY}/$ECR_REPO:web_server_imageid_${BUILD_NUMBER}"
+
+                        // Push Docker image to ECR
+                        sh "docker push ${URL_REGISTRY}/$ECR_REPO:web_server_imageid_${BUILD_NUMBER}"
+                    }
+                }
+            }
+        }
+    }
+}
