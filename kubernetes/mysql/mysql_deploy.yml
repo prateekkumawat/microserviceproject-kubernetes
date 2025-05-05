@@ -25,12 +25,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: mysql-secret
-                  key: mysql-admin-password
+                  key: mysql_admin_password
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mysql-secret
-                  key: mysql-root-password
+                  key: mysql_root_password
           envFrom:
             - configMapRef:
                 name: database-configmap
