@@ -20,7 +20,7 @@ spec:
           resources:
           name: mysql
           imagePullPolicy: Always
-          resource:
+          resources:
             limits:
               cpu: 1
               memory: "2G"
