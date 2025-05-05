@@ -20,10 +20,10 @@ spec:
           resources:
           name: mysql
           imagePullPolicy: Always
-          resources:
-            limits:
-              cpu: 1
-              memory: "2G"
+          # resources:
+          #   limits:
+          #     cpu: 1
+          #     memory: "2G"
           env:
             - name: MYSQL_PASSWORD
               valueFrom:
@@ -40,10 +40,10 @@ spec:
                 name: database-configmap
           ports:
             - containerPort: 3306
-          volumeMounts:
-            - name: mysql-persistent-storage
-              mountPath: /var/lib/mysql
-      volumes:
-        - name: mysql-persistent-storage
-          persistentVolumeClaim:
-            claimName: mysql-pv-claim
+      #     volumeMounts:
+      #       - name: mysql-persistent-storage
+      #         mountPath: /var/lib/mysql
+      # volumes:
+      #   - name: mysql-persistent-storage
+      #     persistentVolumeClaim:
+      #       claimName: mysql-pv-claim
