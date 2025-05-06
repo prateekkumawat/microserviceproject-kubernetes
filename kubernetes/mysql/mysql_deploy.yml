@@ -14,18 +14,11 @@ spec:
       name: mysql-pod
       labels:
         name: mysql-pod
-    spec: #https://kubernetes.io/docs/concepts/configuration/overview/
+    spec:
       containers:
-        - image: mysql:5.7
-          name: mysql
+        - name: mysql
+          image: mysql:5.7
           imagePullPolicy: Always
-          resources:
-            requests:
-              memory: "2Gi"
-              cpu: "500m"
-            limits:
-              memory: "4Gi"
-              cpu: "1
           env:
             - name: MYSQL_PASSWORD
               valueFrom:
@@ -45,6 +38,10 @@ spec:
           volumeMounts:
             - name: mysql-persistent-storage
               mountPath: /var/lib/mysql
+          resources:
+            limits:
+              cpu: "1"
+              memory: "2Gi"
       volumes:
         - name: mysql-persistent-storage
           persistentVolumeClaim:
