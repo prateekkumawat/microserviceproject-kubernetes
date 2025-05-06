@@ -17,10 +17,7 @@ spec:
           image: mysql:5.7
           env:
             - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secret
-                  key: mysql-root-password
+              value: redhat
           ports:
             - containerPort: 3306
           volumeMounts:
