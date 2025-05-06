@@ -19,29 +19,12 @@ spec:
           imagePullPolicy: Always
           env:
             - name: MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secret
-                  key: password
+              value: redhat
             - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secret
-                  key: password
+              value: redhat
             - name: MYSQL_USER
               value: devenes
             - name: MYSQL_DATABASE
               value: phonebook
           ports:
             - containerPort: 3306
-      #     volumeMounts:
-      #       - name: mysql-persistent-storage
-      #         mountPath: /var/lib/mysql
-      #     resources:
-      #       limits:
-      #         cpu: "1"
-      #         memory: "2Gi"
-      # volumes:
-      #   - name: mysql-persistent-storage
-      #     persistentVolumeClaim:
-      #       claimName: mysql-pv-claim
