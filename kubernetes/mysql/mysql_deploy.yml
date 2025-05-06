@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: mysql-deploy
   labels:
-    app: mysql-deploy
+    app: mysql-pod
 spec:
   selector:
     matchLabels:
