@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-database-app-svc
+  labels:
+    app: mysql 
+    enviornment: database
+spec:
+  selector:
+    app: mysql 
+    enviornment: database
+  type: NodePort  
+  ports:
+  - port: 3306            ### kubernetes service port in which cluster will access your pod app
+    targetPort: 3306      ### container port on that your service is running in pod 
+    nodePort: 31333       ### kubernetes service port on which exdpose for outside of cluster 
+
+##### always connect in pod to pod use service name and syntex is "service_name.namespace.svc.cluster.local"
