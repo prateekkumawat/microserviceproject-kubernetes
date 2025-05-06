@@ -3,17 +3,15 @@ kind: Deployment
 metadata:
   name: mysql-deploy
   labels:
-    name: mysql-deploy
+    app: mysql-deploy
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      name: mysql-pod
+      app: mysql-pod
   template:
     metadata:
-      name: mysql-pod
       labels:
-        name: mysql-pod
+        app: mysql-pod
     spec:
       containers:
         - name: mysql
@@ -24,15 +22,16 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: mysql-secret
-                  key: mysql_admin_password
+                  key: password
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mysql-secret
-                  key: mysql_root_password
-          envFrom:
-            - configMapRef:
-                name: database-configmap
+                  key: password
+            - name: MYSQL_USER
+              value: devenes
+            - name: MYSQL_DATABASE
+              value: phonebook
           ports:
             - containerPort: 3306
           volumeMounts:
