@@ -17,13 +17,15 @@ spec:
     spec: #https://kubernetes.io/docs/concepts/configuration/overview/
       containers:
         - image: mysql:5.7
-          resources:
           name: mysql
           imagePullPolicy: Always
-          # resources:
-          #   limits:
-          #     cpu: 1
-          #     memory: "2G"
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "500m"
+            limits:
+              memory: "4Gi"
+              cpu: "1
           env:
             - name: MYSQL_PASSWORD
               valueFrom:
@@ -40,10 +42,10 @@ spec:
                 name: database-configmap
           ports:
             - containerPort: 3306
-      #     volumeMounts:
-      #       - name: mysql-persistent-storage
-      #         mountPath: /var/lib/mysql
-      # volumes:
-      #   - name: mysql-persistent-storage
-      #     persistentVolumeClaim:
-      #       claimName: mysql-pv-claim
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
