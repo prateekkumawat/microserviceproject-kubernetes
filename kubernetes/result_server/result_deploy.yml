@@ -14,6 +14,8 @@ spec:
       labels:
         app: result-app-pod
     spec:
+      imagePullSecrets:
+        - name: ecr-login
       containers:
         - name: result-app
           resources:
