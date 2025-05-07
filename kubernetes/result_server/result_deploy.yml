@@ -18,7 +18,7 @@ spec:
       containers:
         - name: result-app
           resources:
-          image: devenes/python_result_server:2
+          image: 605134434853.dkr.ecr.ap-south-2.amazonaws.com/microservice:result_server_imageid_2
           ports:
             - containerPort: 80
           env:

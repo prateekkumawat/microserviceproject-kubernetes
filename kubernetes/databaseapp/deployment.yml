@@ -42,7 +42,7 @@ spec:
                 name: mysql-database-app-secret   # secret name 
                 key: password      # secret value of key 
           - name: MYSQL_DATABASE
-            value: testdata
+            value: phonebook
         volumeMounts:
         - name: datastore
           mountPath: /var/lib/mysql/ 
