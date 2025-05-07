@@ -3,30 +3,33 @@ kind: Deployment
 metadata:
   name: phonebook-app-deploy
   labels:
-    app: phonebook-app-deploy
+    app: phonebook-app-pod
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: phonebook-app-pod
+      app: phonebook-app-pod
   template:
     metadata:
-      name: phonebook-app-pod
       labels:
-        name: phonebook-app-pod
+        app: phonebook-app-pod
     spec:
       containers:
         - name: phonebook-app
           resources:
           image: 605134434853.dkr.ecr.ap-south-2.amazonaws.com/microservice:web_server_imageid_1
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mysql-secret
-                  key: mysql-admin-password
-          envFrom:
-            - configMapRef:
-                name: servers-configmap
+                  name: phonebook-app-secret
+                  key: password
+            - name: MYSQL_USER
+              value: admin
+            - name: MYSQL_DATABASE
+              value: phonebook
+            - name: MYSQL_DATABASE_HOST
+              value: mysql-database-app-svc.default.svc.cluster.local

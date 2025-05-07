@@ -3,30 +3,33 @@ kind: Deployment
 metadata:
   name: result-app-deploy
   labels:
-    name: result-app-deploy
+    app: result-app-pod
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: result-app-pod
+      app: result-app-pod
   template:
     metadata:
-      name: result-app-pod
       labels:
-        name: result-app-pod
+        app: result-app-pod
     spec:
       containers:
         - name: result-app
           resources:
           image: 605134434853.dkr.ecr.ap-south-2.amazonaws.com/microservice:result_server_imageid_2
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mysql-secret
-                  key: mysql-admin-password
-          envFrom:
-            - configMapRef:
-                name: servers-configmap
+                  name: result-app-secret
+                  key: paasword
+            - name: MYSQL_USER
+              value: admin
+            - name: MYSQL_DATABASE
+              value: phonebook
+            - name: MYSQL_DATABASE_HOST
+              value: mysql-database-app-svc.default.svc.cluster.local
