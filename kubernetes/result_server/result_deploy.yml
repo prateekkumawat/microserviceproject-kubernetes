@@ -36,8 +36,8 @@ spec:
               value: mysql-database-app-svc.default.svc.cluster.local
           resources:
             limits:
-              cpu: 2
+              cpu: 1
               memory: "2G"
             requests: 
-              cpu: 1  
+              cpu: "500m" 
               memory: "1G"
