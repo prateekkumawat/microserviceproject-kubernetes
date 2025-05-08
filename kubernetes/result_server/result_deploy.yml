@@ -34,3 +34,10 @@ spec:
               value: phonebook
             - name: MYSQL_DATABASE_HOST
               value: mysql-database-app-svc.default.svc.cluster.local
+          resources:
+            limits:
+              cpu: 2
+              memory: "2G"
+            requests: 
+              cpu: 1  
+              memory: "1G"
