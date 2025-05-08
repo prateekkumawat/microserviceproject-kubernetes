@@ -18,7 +18,6 @@ spec:
         - name: ecr-login
       containers:
         - name: result-app
-          resources:
           image: 605134434853.dkr.ecr.ap-south-2.amazonaws.com/microservice:result_server_imageid_2
           imagePullPolicy: Always
           ports:
