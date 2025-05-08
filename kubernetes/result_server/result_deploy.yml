@@ -15,7 +15,7 @@ spec:
         app: result-app-pod
     spec:
       imagePullSecrets:
-      - name: ecr-login
+        - name: ecr-login
       containers:
         - name: result-app
           resources:
@@ -28,7 +28,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: result-app-secret
-                  key: paasword
+                  key: password
             - name: MYSQL_USER
               value: admin
             - name: MYSQL_DATABASE
