@@ -19,7 +19,7 @@ spec:
       containers:
         - name: phonebook-app
           resources:
-          image: 605134434853.dkr.ecr.ap-south-2.amazonaws.com/microservice:web_server_imageid_1
+          image: 605134434853.dkr.ecr.ap-south-2.amazonaws.com/microservice:web_server_imageid_2
           imagePullPolicy: Always
           ports:
             - containerPort: 80
