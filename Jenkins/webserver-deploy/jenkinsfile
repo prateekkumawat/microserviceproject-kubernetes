@@ -21,7 +21,7 @@ pipeline {
                 script {
                     withCredentials([file(credentialsId: "kubeconfig-id", variable: 'KUBECONFIG')]) {   
                        sh """
-                        kubectl apply -f kubernetes/result_server/
+                        kubectl apply -f kubernetes/web_server/
                         """
                     }
                 }
