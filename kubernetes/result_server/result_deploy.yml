@@ -24,10 +24,7 @@ spec:
             - containerPort: 80
           env:
             - name: MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: result-app-secret
-                  key: password
+              value: admin123
             - name: MYSQL_USER
               value: admin
             - name: MYSQL_DATABASE
